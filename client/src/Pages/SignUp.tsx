@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
 type FormType = {
   username: string;
@@ -14,6 +14,7 @@ const SignUp = () => {
   });
   const [error, setError] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate=useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -34,6 +35,8 @@ const SignUp = () => {
         .then((res) => {
           console.log(res.data);
           setLoading(false)
+          navigate('/signin')
+
         })
         .catch((err) => {
           console.log(err);

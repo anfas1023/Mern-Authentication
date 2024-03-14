@@ -1,11 +1,16 @@
 const express=require('express')
 const app=express();
 const mongoose=require('mongoose');
+const cookieParser=require('cookie-parser');
 const dotenv=require('dotenv').config();
 const userRouter=require('./routes/userRoute');
 const adminRouter=require('./routes/authRoute')
-const cors=require('cors')
-app.use(cors());
+const cors=require('cors');
+const cookieOptions = {
+    httpOnly: true
+}
+
+app.use(cookieParser(cookieOptions))
 
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log("Database connected");
@@ -14,6 +19,19 @@ mongoose.connect(process.env.MONGO).then(()=>{
 });
 
 app.use(express.json())
+// const corsOptions ={
+//     origin:'http://localhost:5173/', 
+//     credentials:true,            //access-control-allow-credentials:true
+//     optionSuccessStatus:200
+// }
+app.use(cors({
+    origin: 'http://localhost:4000',
+    credentials: true
+}))
+
+
+
+  
 
 app.use('/Server/user',userRouter);
 app.use('/Server/auth',adminRouter);

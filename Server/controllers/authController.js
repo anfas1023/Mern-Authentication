@@ -1,10 +1,12 @@
 
 const User =require('../model/userModel')
-const bcrypt=require('bcrypt')
+const bcrypt=require('bcrypt');
+const errorHandler = require('../utils/error');
+const jwt=require('jsonwebtoken');
 const signup=async(req,res,next)=>{
 try {
     const {username,password,email}=req.body
-    console.log("user",req.body);
+    
     const hashedPassword=bcrypt.hashSync(password,10)
     const newUser=new User(
      {
@@ -16,12 +18,41 @@ try {
  
     await newUser.save();
 
-    res.status(200).json({message:"user Created suceffully"})
+    res.status(200).json({message:"user Created suceffully"});
 } catch (error) {
    next(error);
 }
 }
 
+   
+
+const signin=async(req,res,next)=>{
+    const {email,password}=req.body
+try {
+    console.log(req.body);
+    const validatUser=await User.findOne({email});
+    if(!validatUser) return next(errorHandler(404,'User Not Found'));
+    const validPassword=bcrypt.compareSync(password,validatUser.password);
+    if(!validPassword) return next(errorHandler(401,'Wrorng Creadintail'));
+    const token=jwt.sign({id:validatUser._id},process.env.JWT_SECRET);
+    const {password:hashedPassword,...rest}=validatUser._doc
+    const expirayDate=new Date(Date.now()+3600000);
+    res.cookie('access_token',token, {
+        httpOnly: true,
+        secure: true, 
+        sameSite: 'None',
+        maxAge: expirayDate, // 30 days
+       })
+    .status(200)
+    .json(rest)
+ 
+   
+} catch (error) {
+    next(error);
+}
+}
+
 module.exports={
-    signup
+    signup,
+    signin,
 }
