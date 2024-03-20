@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
-import axios from "axios";
-type FormType = {
+import {useAppDispatch,useAppSelector} from '../app/hook'
+import {signInUser} from '../features/data/userData'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
+
+
+type FormType = {
   email: string;
   password: string;
 };
-const Signin = () => {
+const Signin = () => { 
+  const notify = () => toast("Wow so easy!");
+ 
+  const dispatch=useAppDispatch();
+  const {loading,error,users} =useAppSelector((state)=>state.userData);
+  
   const [form, setForm] = useState<FormType>({
-
     email: "",
     password: "",
   });
-  const [error, setError] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  
   const navigate=useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,31 +32,40 @@ const Signin = () => {
     });
   };
 
-
-
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>)=> {
     try {
       e.preventDefault();
-      setLoading(true);
-      setError(false);
-    console.log(form);
+      dispatch(signInUser(form));
     
-      await axios
-        .post("http://localhost:3000/Server/auth/signin", form)
-        .then((res) => {
-          console.log(res.data);
-      // document.cookie=`access_token=${res.data} path=/; `
-          setLoading(false)
-          navigate('/')
-        })
-        .catch((err) => {
-          console.log(err);
-          setError(true);
-          setLoading(false);
-        });
+     if(users){
+      navigate('/')
+      toast.success('Wow so easy!');
+     
+     }
+      // await axios
+      //   .post("http://localhost:3000/Server/auth/signin", form,{
+      //     method:'post',
+      //     headers:{
+      //       "Content-Type":'application/json'
+      //     },
+      //    withCredentials:true
+      //   }
+     
+      //   )
+      //   .then((res) => {
+      //     console.log(res.data);
+    
+      //     // setLoading(false)
+      //     dispatch(signInSucess(res.data))
+      //     navigate('/')
+      //   })
+      //   .catch((err) => {
+      //     console.log("err",err);
+      //   dispatch(signInFailure(true));
+      //   });
     } catch (error) {
-   
+     console.log(error);
+     
     }
   };
 
@@ -71,17 +88,25 @@ const Signin = () => {
           onChange={handleChange}
         ></input>
         <button className="bg-slate-700 p-3 rounded-lg text-white uppercase hover:opacity-90">
-         {loading ? 'Loading' : 'sign up'}
+         {loading ? 'Loading' : 'Sign In'}
         </button>
+        {/* <button onClick={notify}>Notify!</button> */}
+       
       </form>
       <div className="flex gap-2 mt-3">
-        <p>Have an Account?</p>
-        <Link to="/signin">
-          <span className="text-blue-500">Sign in</span>
+        <p> Dont Have An Account?</p>
+        <Link to="/signup">
+          <span className="text-blue-500">Sign Up</span>
         </Link>
       </div>
       <p className="text-red-600">{error && 'Email already Exist!!'}</p>
+      {/* <ToastContainer /> */}
+      <div>
+
+</div>
     </div>
+
+
   );
 };
 

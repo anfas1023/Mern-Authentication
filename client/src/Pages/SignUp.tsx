@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
-import axios from "axios";
+import {signUpUser} from '../features/data/userData'
+import { useAppDispatch,useAppSelector } from "../app/hook";
 type FormType = {
   username: string;
   email: string;
   password: string;
 };
 const SignUp = () => {
+  const {loading,error,users} =useAppSelector((state)=>state.userData);
   const [form, setForm] = useState<FormType>({
     username: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const navigate=useNavigate()
+  // const [error, setError] = useState<boolean | null>(null);
+  // const [loading, setLoading] = useState<boolean>(false);
+  const navigate=useNavigate();
+  const dispatch=useAppDispatch()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -27,22 +30,9 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      setLoading(true);
-      setError(false);
-
-      await axios
-        .post("/Server/auth/signup", form)
-        .then((res) => {
-          console.log(res.data);
-          setLoading(false)
-          navigate('/signin')
-
-        })
-        .catch((err) => {
-          console.log(err);
-          setError(true);
-          setLoading(false);
-        });
+      dispatch(signUpUser(form))
+      console.log("here");
+        navigate('/signin')
     } catch (error) {
    
     }
@@ -74,7 +64,7 @@ const SignUp = () => {
           onChange={handleChange}
         ></input>
         <button className="bg-slate-700 p-3 rounded-lg text-white uppercase hover:opacity-90">
-         {loading ? 'Loading' : 'sign up'}
+         {loading ? 'Loading' : 'sign Up'}
         </button>
       </form>
       <div className="flex gap-2 mt-3">
