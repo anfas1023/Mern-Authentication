@@ -8,6 +8,6 @@ router.get('/fetchOneUser/:userId',adminController.fetchOneUser);
 router.post('/adminedituser/:userid',adminController.adminedituser);
 router.delete('/deleteUser/:userId',adminController.deleteUser);
 router.post('/createuser',adminController.adminCreateUser)
-
-
+router.get('/adminLogeedIn',adminController.getLoggedInAdmin);
+router.get('/adminlogout',adminController.Adminlogout)
 module.exports=router

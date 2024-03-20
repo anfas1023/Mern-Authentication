@@ -33,7 +33,6 @@ try {
 }
 }
 
-
 const fetchAllUser=async(req,res,next)=>{
 const userData=await User.find();
 
@@ -141,6 +140,24 @@ if(userExist) {
 }
   }
 
+
+  const getLoggedInAdmin=(req,res)=>{
+   if(!req.cookies.admin_token) {
+    return res.status(401).json({ errorMessage: "No admin token found" });
+   }
+   const token=req.cookies.admin_token
+
+   const decode=jwt.verify(token,process.env.JWT_SECRET);
+   console.log(decode);
+  
+   return res.status(201).json(decode)
+
+  }
+
+  const Adminlogout=(req,res)=>{
+    res.clearCookie('admin_token').status(200).json('Sign Out Sucess')
+}
+
  
   
 
@@ -156,5 +173,8 @@ module.exports={
     adminedituser,
     deleteUser,
     adminCreateUser,
+    getLoggedInAdmin,
+    Adminlogout
+
     
 }

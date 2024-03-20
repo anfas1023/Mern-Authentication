@@ -32,6 +32,38 @@ export const adminLogin = createAsyncThunk('admin/login', async (adminform:admin
     }
   });
 
+  export const adminGetLoggedIn = createAsyncThunk('admin/adminLoggedIn', async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/Server/admin/adminLogeedIn", {
+        method: 'get',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        withCredentials: true
+      });
+    
+      return response.data; 
+    } catch (error) {
+      throw error; 
+    }
+  });
+
+  export const adminLogOut = createAsyncThunk('admin/adminLogOut', async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/Server/admin/adminlogout", {
+        method: 'get',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        withCredentials: true
+      });
+    
+      return response.data;
+    } catch (error) {
+      throw error; 
+    }
+  });
+
 
 const adminSlice=createSlice({
     name:'admin',
@@ -53,6 +85,38 @@ const adminSlice=createSlice({
             state.admin=null
             state.error=true
         })
+
+        builder.addCase(adminGetLoggedIn.pending,(state)=>{
+          state.loading=true
+      })
+
+      builder.addCase(adminGetLoggedIn.fulfilled,(state,action:PayloadAction<string>)=>{
+          state.loading=false
+          state.admin=action.payload
+          state.error=false
+      })
+
+      builder.addCase(adminGetLoggedIn.rejected,(state)=>{
+          state.loading=false
+          state.admin=null
+          state.error=true
+      })
+
+      builder.addCase(adminLogOut.pending,(state)=>{
+        state.loading=true
+    })
+
+    builder.addCase(adminLogOut.fulfilled,(state)=>{
+        state.loading=false
+        state.admin=null
+        state.error=false
+    })
+
+    builder.addCase(adminLogOut.rejected,(state)=>{
+        state.loading=false
+        state.admin=null
+        state.error=true
+    })
    
         
 

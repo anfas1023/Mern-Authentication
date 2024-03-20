@@ -3,6 +3,8 @@ import Image from "../../public/user-sign-icon-front-side-with-white-background.
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import axios from 'axios'
 import {Updateuser,deleteUser,LogOutUser} from '../features/data/userData'
+import Header from '../Components/Header'
+
 
 const Profile = () => {
   const fileRef=useRef<HTMLInputElement | null>(null)
@@ -30,7 +32,7 @@ const Profile = () => {
         const response = await axios.post('http://localhost:3000/Server/user/updateimage', formData,
         
         {
-          withCredentials:true,
+          withCredentials:true, 
           headers:{
             'content-type': 'multipart/form-data'
           }
@@ -72,7 +74,10 @@ const Profile = () => {
     dispatch(LogOutUser())
   }
   return (
-    <div className="max-w-lg  mx-auto">
+    
+<>
+<Header/>
+<div className="max-w-lg  mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
       <input type='file' onChange={handleImage} ref={fileRef} className="bg-slate-100 rounded-lg py-3 px-3 hidden"></input>
@@ -118,6 +123,7 @@ const Profile = () => {
       </div>
       {/* <p className="text-red-700">{error && 'something Went Error'}</p> */}
     </div>
+</>
   );
 };
 

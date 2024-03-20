@@ -1,8 +1,10 @@
 import React from 'react'
+import Header from '../Components/Header'
 
 const About = () => {
   return (
 <>
+<Header/>
 <div className=' border-slate-300 border-2  max-w-lg mx-auto mt-5 p-3'>
   <h3 className='font-serif font-bold text-center'>
   HELLO THIS IS A MERN AUTHENTICATION PROJECT

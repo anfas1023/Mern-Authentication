@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import {useAppDispatch,useAppSelector} from '../../app/hook'
 import {adminLogin} from '../../features/admin/adminslice'
 import {useNavigate} from 'react-router-dom'
+import AdminNav from '../../Components/AdminNav';
  
 
 type FormType = {
@@ -10,6 +11,7 @@ type FormType = {
   };
 const AdminLogin = () => {
   const navigate=useNavigate()
+  const {admin}=useAppSelector((state)=>state.admin)
     const [form, setForm] = useState<FormType>({
         email: "",
         password: "",
@@ -20,8 +22,9 @@ const AdminLogin = () => {
     if(admin){
       navigate('/admindashboard')
     }
-  })
-  const {admin}=useAppSelector((state)=>state.admin)
+ 
+  },[admin])
+
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setForm({
@@ -39,6 +42,7 @@ const AdminLogin = () => {
       }
   return (
    <>
+   <AdminNav/>
    <div className=" p-3 max-w-xl mx-auto">
       <h1 className="text-3xl text-center font-bold p-5">Admin Login</h1>
       <form onSubmit={handleSubmit}  className="flex flex-col gap-4">

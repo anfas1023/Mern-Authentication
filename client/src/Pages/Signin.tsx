@@ -4,6 +4,7 @@ import {useAppDispatch,useAppSelector} from '../app/hook'
 import {signInUser} from '../features/data/userData'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import Header from '../Components/Header'
 
 
 
@@ -70,6 +71,8 @@ const Signin = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className=" p-3 max-w-xl mx-auto">
       <h1 className="text-3xl text-center font-bold p-5">Sign In</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -106,6 +109,7 @@ const Signin = () => {
 </div>
     </div>
 
+    </>
 
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import {signUpUser} from '../features/data/userData'
 import { useAppDispatch,useAppSelector } from "../app/hook";
+import Header from '../Components/Header'
 type FormType = {
   username: string;
   email: string;
@@ -39,6 +40,7 @@ const SignUp = () => {
   };
 
   return (
+    <>
     <div className=" p-3 max-w-xl mx-auto">
       <h1 className="text-3xl text-center font-bold p-5">Sign Up</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -75,6 +77,7 @@ const SignUp = () => {
       </div>
       <p className="text-red-600">{error && 'Email already Exist!!'}</p>
     </div>
+    </>
   );
 };
 

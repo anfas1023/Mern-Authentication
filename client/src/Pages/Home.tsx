@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useAppSelector } from '../app/hook'
 import { useNavigate } from "react-router-dom";
+import Header from '../Components/Header'
 
 const Home = () => {
+  <Header/>
   const navigate=useNavigate()
   const {users}=useAppSelector((state)=>state.userData)
-  console.log(users?.username);
 
   useEffect(()=>{
     if(!users?.username){
@@ -17,6 +18,7 @@ const Home = () => {
 
     
 <>
+<Header/>
 <div className=' border-slate-300 border-2  max-w-lg mx-auto mt-5 p-3'>
   <h3 className='font-serif font-bold text-center'>
     Welcome {users?.username}
